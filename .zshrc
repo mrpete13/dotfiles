@@ -2,16 +2,16 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/matt/.oh-my-zsh"
+export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="jovial"
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+ZSH_THEME="lambda"
 
 # Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
+# Setting this variable when ZSH_THEME="agnoster_alt"
 # a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
 # If set to an empty array, this variable will have no effect.
 # ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
@@ -70,10 +70,10 @@ ZSH_THEME="jovial"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
   git
-  autojump
-  urltools
+    urltools
   bgnotify
   zsh-autosuggestions
+  zsh-syntax-highlighting
   jovial
   osx
 )
@@ -105,16 +105,62 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-alias torbrowser="mate ~/tor-browser.desktop"
-alias la="ls -a"
-alias ll="ls -al"
-alias update="sudo pacman -Syu"
-alias install="sudo pacman -S"
-alias search="sudo find / -name"
+# omz
+#alias zshconfig="vim ~/.zshrc"
+alias ohmyzsh="thunar ~/.oh-my-zsh"
 
-#Hide user@hostname
-prompt_context() {
-  if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
-    prompt_segment black default "%(!.%{%F{yellow}%}.)$USER"
-  fi
+# ls
+alias l='ls -lh'
+alias ll='ls -lah'
+alias la='ls -A'
+alias lm='ls -m'
+alias lr='ls -R'
+alias lg='ls -l --group-directories-first'
+
+# Config
+alias zshconfig='vim ~/.zshrc && source ~/.zshrc'
+
+# git
+alias gcl='git clone --depth 1'
+alias gi='git init'
+alias ga='git add'
+alias gc='git commit -m'
+alias gp='git push origin master'
+
+neofetch | lolcat
+
+ddg () {
+ 	lynx "https://duckduckgo.com/?t=ffnt&q=$(echo $* | sed 's/[ ]/+/g')"
 }
+
+tube (){
+	lynx "https://youtube.com/results?search_query=$(echo $* | sed 's/[ ]/+/g')"
+}
+
+zshadd () {
+    echo "$@" >> ~/.zshrc
+}
+
+weather () {
+    curl wttr.in
+}
+
+weather2 () {
+    curl v2.wttr.in
+}
+
+moon () {
+    curl wttr.in/moon
+}
+
+tlynx () {
+    torsocks /usr/bin/lynx -noreferer $@
+}
+
+
+#Hide user@hostname in the agnoster omz theme
+#prompt_context() {
+#  if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
+#    prompt_segment black default "%(!.%{%F{yellow}%}.)$USER"
+#  fi
+#}
