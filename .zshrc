@@ -38,7 +38,7 @@ alias gc='git commit -m'
 alias gp='git push origin master'
 alias pullall='ls | xargs -I{} git -C {} pull'
 
-#Clone all used for ~/ 
+#Git Pull used for ~/ 
 alias gitpullall='find . -name ".git" -type d | sed 's/\/.git//' |  xargs -P10 -I{} git -C {} pull'
 
 # Display battery percentage
