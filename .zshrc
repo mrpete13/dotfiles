@@ -1,113 +1,22 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+fpath+=$HOME/.zsh/pure
+export ZSH="/home/mrpete/.oh-my-zsh"
 
-# Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
+ZSH_THEME="robbyrussell"
+EDITOR="/usr/bin/vim"
+autoload -U promptinit; promptinit
+prompt pure
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="lambda"
-
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME="agnoster_alt"
-# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS=true
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(
-  git
-    urltools
-  bgnotify
-  zsh-autosuggestions
-  zsh-syntax-highlighting
-  jovial
-  osx
-)
+plugins=(git 
+	vi-mode 
+	zsh-completions 
+	zsh-autosuggestions 
+	zsh-syntax-highlighting)
+autoload -U compinit && compinit
 
 source $ZSH/oh-my-zsh.sh
 
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-# omz
-#alias zshconfig="vim ~/.zshrc"
-alias ohmyzsh="thunar ~/.oh-my-zsh"
+#neofetch | lolcat
+#fet.sh
 
 # ls
 alias l='ls -lh'
@@ -119,6 +28,7 @@ alias lg='ls -l --group-directories-first'
 
 # Config
 alias zshconfig='vim ~/.zshrc && source ~/.zshrc'
+alias i3config="vim ~/.config/i3/config"
 
 # git
 alias gcl='git clone --depth 1'
@@ -126,11 +36,28 @@ alias gi='git init'
 alias ga='git add'
 alias gc='git commit -m'
 alias gp='git push origin master'
+alias pullall='ls | xargs -I{} git -C {} pull'
 
-neofetch | lolcat
+#Clone all used for ~/ 
+alias gitpullall='find . -name ".git" -type d | sed 's/\/.git//' |  xargs -P10 -I{} git -C {} pull'
+
+# Display battery percentage
+alias batt='upower -i $(upower -e | grep BAT) | grep --color=never -E "state|to\
+full|to\ empty|percentage"'
+
+# Good aliases to have
+alias gh='history|grep'
+alias dl="cd ~/Downloads" 
+alias aur="cd ~/Downloads/aur"
+alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'          
+alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
+alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\\: .*|GET \\/.*\""
+alias neofetch="neofetch | lolcat"
+
+# Bash script things
 
 ddg () {
- 	lynx "https://duckduckgo.com/?t=ffnt&q=$(echo $* | sed 's/[ ]/+/g')"
+    lynx "https://duckduckgo.com/?t=ffnt&q=$(echo $* | sed 's/[ ]/+/g')"
 }
 
 tube (){
@@ -157,10 +84,51 @@ tlynx () {
     torsocks /usr/bin/lynx -noreferer $@
 }
 
+tcurl () {
+    torsocks curl
+}
 
-#Hide user@hostname in the agnoster omz theme
-#prompt_context() {
-#  if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
-#    prompt_segment black default "%(!.%{%F{yellow}%}.)$USER"
-#  fi
-#}
+
+function tre() {
+	tree -aC -I '.git' --dirsfirst "$@" | less -FRNX
+}
+
+function man() {
+	env \
+		LESS_TERMCAP_mb="$(printf '\e[1;31m')" \
+		LESS_TERMCAP_md="$(printf '\e[1;31m')" \
+		LESS_TERMCAP_me="$(printf '\e[0m')" \
+		LESS_TERMCAP_se="$(printf '\e[0m')" \
+		LESS_TERMCAP_so="$(printf '\e[1;44;33m')" \
+		LESS_TERMCAP_ue="$(printf '\e[0m')" \
+		LESS_TERMCAP_us="$(printf '\e[1;32m')" \
+		man "$@"
+}
+
+function isup() {
+	local uri=$1
+
+	if curl -s --head  --request GET "$uri" | grep "200 OK" > /dev/null ; then
+		notify-send --urgency=critical "$uri is down"
+	else
+		notify-send --urgency=low "$uri is up"
+	fi
+}
+
+function open-localhost() {
+    if [ $# -eq 0 ]; then
+        chrome-cli http://localhost:3000
+    else
+        chrome-cli http://localhost:$1
+    fi
+}
+
+function texthash() {
+    echo -n $1 | md5sum | awk '{print "MD5 = " $1}'
+    echo -n $1 | shasum | awk '{print "SHA1 = " $1}'
+    echo -n $1 | sha256sum | awk '{print "SHA256 = " $1}'
+}
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
