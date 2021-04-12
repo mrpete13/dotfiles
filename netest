@@ -1,0 +1,30 @@
+#!/bin/sh
+ 
+# -q quiet
+# -c nb of pings to perform
+
+GATEWAY=$(/sbin/ip route | awk '/default/ { print $3 }')
+ 
+ping -q -c1 $GATEWAY > /dev/null
+if [ $? -eq 0 ]
+then
+	echo "Path to default gateway is good"
+else
+    echo "No path to default gateway"
+fi	
+
+ping -q -c1 1.1.1.1 > /dev/null                                         
+if [ $? -eq 0 ]
+then
+    echo "WAN Good"
+else
+    echo "WAN Down"
+fi
+
+ping -q -c1 google.com > /dev/null
+if [ $? -eq 0 ]
+then
+	echo "DNS Good"
+else
+    echo "Unable to resolve DNS"
+fi
