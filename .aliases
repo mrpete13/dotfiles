@@ -1,0 +1,28 @@
+# ls
+alias l='ls -lh'
+alias ll='ls -lah'
+alias la='ls -A'
+alias lm='ls -m'
+alias lr='ls -R'
+alias lg='ls -l --group-directories-first'
+
+# Config
+alias zshconfig='vim ~/.zshrc && source ~/.zshrc'
+alias i3config="vim ~/.config/i3/config"
+
+# git
+alias gcl='git clone --depth 1'
+alias gi='git init'
+alias ga='git add'
+alias gc='git commit -m'
+alias gp='git push origin master'
+alias pullall='ls | xargs -I{} git -C {} pull'
+
+# Good aliases to have
+alias gh='history|grep'
+alias dl="cd ~/Downloads" 
+alias aur="cd ~/Downloads/aur"
+alias timer='echo "Timer started. Stop with Ctrl-D." && date && time cat && date'          
+alias sniff="sudo ngrep -d 'en1' -t '^(GET|POST) ' 'tcp and port 80'"
+alias httpdump="sudo tcpdump -i en1 -n -s 0 -w - | grep -a -o -E \"Host\\: .*|GET \\/.*\""
+
