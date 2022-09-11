@@ -16,4 +16,4 @@ autoload -U compinit && compinit
 source $ZSH/oh-my-zsh.sh
 source ~/.aliases
 source ~/.bash_scripts
-source ptSh_set_aliases
+#source ptSh_set_aliases
